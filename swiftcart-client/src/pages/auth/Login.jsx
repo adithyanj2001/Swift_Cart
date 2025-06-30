@@ -70,7 +70,7 @@ function Login() {
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          New to <strong>Swift Cart</strong>?{' '}
+          New to <strong>Swift_Cart</strong>?{' '}
           <a href="/register" className="text-red-600 hover:underline">
             Create an account
           </a>
