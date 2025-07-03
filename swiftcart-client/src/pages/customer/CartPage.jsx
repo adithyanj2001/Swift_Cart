@@ -10,12 +10,10 @@ const CartPage = () => {
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     name: '', phone: '', address: '', pin: '', state: '', paymentMethod: 'Cash',
-    cardNumber: '', cardHolderName: '', expiryMonth: '', expiryYear: '', cvv: ''
   });
 
   const navigate = useNavigate();
 
-  // Fetch cart 
   useEffect(() => {
     API.get('/cart')
       .then((res) => {
@@ -30,7 +28,6 @@ const CartPage = () => {
       });
   }, []);
 
-  // Remove individual item
   const removeFromCart = async (productId) => {
     try {
       await API.delete(`/cart/item/${productId}`);
@@ -42,7 +39,6 @@ const CartPage = () => {
     }
   };
 
-  // Toggle selection
   const toggleSelectItem = (productId) => {
     setSelectedItems(prev =>
       prev.includes(productId)
@@ -56,71 +52,111 @@ const CartPage = () => {
       .filter(item => selectedItems.includes(item.productId._id))
       .reduce((sum, item) => sum + (item.productId.price * item.qty), 0);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const updatedValue = (() => {
-      if (name === 'phone') return value.replace(/\D/g, '').slice(0, 10);
-      if (name === 'cvv') return value.replace(/\D/g, '').slice(0, 3);
-      if (name === 'cardNumber') return value.replace(/\D/g, '').slice(0, 16);
-      return value;
-    })();
-    setForm(prev => ({ ...prev, [name]: updatedValue }));
-  };
+      const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        const updatedValue = (() => {
+          if (name === 'phone') return value.replace(/\D/g, '').slice(0, 10);
+          if (name === 'cvv') return value.replace(/\D/g, '').slice(0, 3);
+          if (name === 'cardNumber') return value.replace(/\D/g, '').slice(0, 16); // ✅ remove all non-digits
+          return value;
+        })();
+        setForm(prev => ({ ...prev, [name]: updatedValue }));
+      };
+      
 
   const validateForm = () => {
     const newErrors = {};
     if (!form.name.trim()) newErrors.name = 'Name is required';
-    if (!form.phone.trim() || form.phone.length !== 10) newErrors.phone = 'Enter a valid 10-digit phone number';
+    if (!form.phone.trim() || form.phone.length !== 10) newErrors.phone = 'Valid 10-digit phone required';
     if (!form.address.trim()) newErrors.address = 'Address is required';
     if (!form.pin.trim()) newErrors.pin = 'PIN Code is required';
     if (!form.state.trim()) newErrors.state = 'State is required';
-
-    if (form.paymentMethod === 'Online') {
-      if (!form.cardNumber || form.cardNumber.length < 16) newErrors.cardNumber = 'Card number must be 16 digits';
-      if (!form.cardHolderName.trim()) newErrors.cardHolderName = 'Cardholder name is required';
-      if (!form.expiryMonth || !form.expiryYear) newErrors.expiry = 'Expiry month and year required';
-      if (!form.cvv || form.cvv.length !== 3) newErrors.cvv = 'Enter a valid 3-digit CVV';
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle order placement
+  // 👉 Razorpay handler
+  const handleOnlinePayment = async () => {
+    const totalAmount = getSelectedTotal();
+
+    try {
+      // 1. Create order from backend
+      const { data: order } = await API.post('/payment/create-order', {
+        amount: totalAmount
+      });
+
+      const options = {
+        key: 'rzp_test_f6eGg9xIexcdCg', // 🔁 Replace with your real key ID
+        amount: order.amount,
+        currency: order.currency,
+        name: "Swift Cart",
+        description: "Test Payment",
+        order_id: order.id,
+        handler: async function (response) {
+          console.log("Razorpay Success:", response);
+
+          // 2. Place order after payment success
+          const placeRes = await API.post('/orders', {
+            paymentMethod: 'Online',
+            name: form.name,
+            phone: form.phone,
+            address: form.address,
+            pin: form.pin,
+            state: form.state,
+            selectedItems
+          });
+
+          setCartItems(prev => prev.filter(item => !selectedItems.includes(item.productId._id)));
+          setSelectedItems([]);
+          setShowCheckout(false);
+          alert("Payment successful! Order placed ✅");
+          navigate('/customer/payment-success');
+        },
+        prefill: {
+          name: form.name,
+          email: "demo@example.com",
+          contact: form.phone
+        },
+        theme: {
+          color: "#9333ea"
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error('Razorpay Error:', err);
+      alert("Payment failed");
+    }
+  };
+
   const handlePayment = async () => {
     if (selectedItems.length === 0) return alert("Please select items to order.");
     if (!validateForm()) return;
 
-    try {
-      const res = await API.post('/orders', {
-        paymentMethod: form.paymentMethod,
-        name: form.name,
-        phone: form.phone,
-        address: form.address,
-        pin: form.pin,
-        state: form.state,
-        selectedItems
-      });
+    if (form.paymentMethod === 'Online') {
+      handleOnlinePayment();
+    } else {
+      try {
+        const res = await API.post('/orders', {
+          paymentMethod: 'Cash',
+          name: form.name,
+          phone: form.phone,
+          address: form.address,
+          pin: form.pin,
+          state: form.state,
+          selectedItems
+        });
 
-      console.log("Order Response:", res.data);
-
-      // Remove ordered items
-   
-setCartItems(prev => prev.filter(item => !selectedItems.includes(item.productId._id)));
-
-
-      setCartItems(prev => prev.filter(item => !selectedItems.includes(item.productId._id)));
-      setSelectedItems([]);
-      setShowCheckout(false);
-
-      setTimeout(() => {
+        setCartItems(prev => prev.filter(item => !selectedItems.includes(item.productId._id)));
+        setSelectedItems([]);
+        setShowCheckout(false);
         alert("Order placed successfully!");
         navigate('/customer/payment-success');
-      }, 1000);
-
-    } catch (err) {
-      console.error("Order failed:", err);
-      alert('Order failed: ' + (err.response?.data?.message || 'Unknown server error'));
+      } catch (err) {
+        console.error("Order failed:", err);
+        alert('Order failed: ' + (err.response?.data?.message || 'Unknown server error'));
+      }
     }
   };
 
@@ -137,7 +173,6 @@ setCartItems(prev => prev.filter(item => !selectedItems.includes(item.productId.
           <div className="space-y-4">
             {cartItems.map((item) => {
               if (!item.productId) return null;
-
               return (
                 <div key={item.productId._id} className="flex items-center border p-4 rounded shadow bg-white">
                   <input
@@ -201,47 +236,6 @@ setCartItems(prev => prev.filter(item => !selectedItems.includes(item.productId.
                   <option value="Online">Online Payment</option>
                 </select>
               </div>
-
-              {form.paymentMethod === 'Online' && (
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input name="cardNumber" placeholder="Card Number" value={form.cardNumber}
-                    onChange={handleInputChange}
-                    className={`border p-2 rounded w-full ${errors.cardNumber ? 'border-red-500' : ''}`}
-                  />
-                  <input name="cardHolderName" placeholder="Cardholder Name" value={form.cardHolderName}
-                    onChange={handleInputChange}
-                    className={`border p-2 rounded w-full ${errors.cardHolderName ? 'border-red-500' : ''}`}
-                  />
-                  <div className="flex gap-2">
-                    <select name="expiryMonth" value={form.expiryMonth} onChange={handleInputChange}
-                      className="border p-2 rounded w-full">
-                      <option value="">Month</option>
-                      {[...Array(12)].map((_, i) => (
-                        <option key={i} value={String(i + 1).padStart(2, '0')}>
-                          {String(i + 1).padStart(2, '0')}
-                        </option>
-                      ))}
-                    </select>
-                    <select name="expiryYear" value={form.expiryYear} onChange={handleInputChange}
-                      className="border p-2 rounded w-full">
-                      <option value="">Year</option>
-                      {[...Array(10)].map((_, i) => {
-                        const year = new Date().getFullYear() + i;
-                        return <option key={year} value={year}>{year}</option>;
-                      })}
-                    </select>
-                  </div>
-                  {errors.expiry && <p className="text-red-500 text-xs col-span-2">{errors.expiry}</p>}
-                  <input
-                    name="cvv"
-                    placeholder="CVV"
-                    value={form.cvv}
-                    onChange={handleInputChange}
-                    className={`border p-2 rounded w-full ${errors.cvv ? 'border-red-500' : ''}`}
-                  />
-                  {errors.cvv && <p className="text-red-500 text-xs">{errors.cvv}</p>}
-                </div>
-              )}
 
               <button
                 onClick={handlePayment}

@@ -49,10 +49,11 @@ const SalesChart = () => {
       {
         label: 'Monthly Sales',
         data: Object.values(monthlyData),
-        backgroundColor: '#3B82F6', // graph color
+        backgroundColor: '#9333ea', // purple-600
       },
     ],
   };
+  
 
   const chartOptions = {
     responsive: true,
@@ -68,10 +69,8 @@ const SalesChart = () => {
     try {
       const original = reportRef.current;
       if (!original) return alert('No content found');
-  
+
       const clone = original.cloneNode(true);
-  
-      // Style override to avoid oklch/Tailwind
       clone.style.backgroundColor = '#ffffff';
       clone.style.color = '#000';
       clone.querySelectorAll('*').forEach((el) => {
@@ -80,46 +79,44 @@ const SalesChart = () => {
         el.style.boxShadow = 'none';
         el.style.border = '1px solid #ddd';
       });
-  
-      // Create an off-screen container
+
       const hiddenContainer = document.createElement('div');
       hiddenContainer.style.position = 'fixed';
       hiddenContainer.style.top = '-10000px';
       hiddenContainer.appendChild(clone);
       document.body.appendChild(hiddenContainer);
-  
+
       const canvas = await html2canvas(clone, {
         backgroundColor: '#ffffff',
         scale: 2,
         useCORS: true,
       });
-  
+
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgWidth = 190;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
+
       pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
       pdf.save(`Sales_Report_${selectedYear || 'All'}_${selectedMonth || 'All'}.pdf`);
-  
-      
+
       document.body.removeChild(hiddenContainer);
     } catch (error) {
       alert('PDF export failed.');
       console.error('PDF Error:', error);
     }
   };
-  
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-blue-700">Sales Chart</h1>
+    <div className="p-6 bg-gradient-to-br from-white min-h-screen">
+      <h1 className="text-2xl font-extrabold mb-6 text-yellow-700">SALES CHARTS</h1>
 
+      {/* Filters */}
       <div className="flex items-center gap-4 flex-wrap mb-6">
         <select
           value={selectedYear}
           onChange={(e) => setSelectedYear(e.target.value)}
-          className="border border-gray-300 p-2 rounded shadow"
+          className="border border-yellow-400 p-2 rounded shadow text-sm"
         >
           <option value="">All Years</option>
           {uniqueYears.map((year) => (
@@ -130,7 +127,7 @@ const SalesChart = () => {
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
-          className="border border-gray-300 p-2 rounded shadow"
+          className="border border-yellow-400 p-2 rounded shadow text-sm"
         >
           <option value="">All Months</option>
           {Array.from({ length: 12 }, (_, i) => {
@@ -141,7 +138,7 @@ const SalesChart = () => {
 
         <button
           onClick={handleDownloadPDF}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm"
           disabled={loadingPDF}
         >
           {loadingPDF ? 'Generating PDF...' : 'Download PDF'}
@@ -149,13 +146,15 @@ const SalesChart = () => {
       </div>
 
       <div ref={reportRef}>
+        {/* Chart */}
         <div className="bg-white p-6 rounded-xl shadow-md mb-8">
           <Bar data={chartData} options={chartOptions} />
 
+          {/* Table */}
           <div className="mt-8 overflow-x-auto">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">All Transactions</h2>
+            <h2 className="text-xl font-semibold mb-4 text-yellow-700">All Transactions</h2>
             <table className="w-full text-sm border border-gray-200">
-              <thead className="bg-gray-100 text-gray-700">
+              <thead className="bg-yellow-100 text-yellow-700">
                 <tr>
                   <th className="p-3 border text-left">Date</th>
                   <th className="p-3 border text-left">Time</th>
@@ -170,7 +169,7 @@ const SalesChart = () => {
               <tbody>
                 {filteredTransactions.length > 0 ? (
                   filteredTransactions.map((tx) => (
-                    <tr key={tx._id} className="border-t hover:bg-gray-50 transition">
+                    <tr key={tx._id} className="border-t hover:bg-yellow-50 transition">
                       <td className="p-3 border">{new Date(tx.date).toLocaleDateString()}</td>
                       <td className="p-3 border">{tx.time}</td>
                       <td className="p-3 border">{tx.customerName}</td>

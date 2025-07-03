@@ -22,22 +22,27 @@ function UpdateStatus() {
     if (!status) return alert('Select a status');
     try {
       await API.put(`/delivery/${id}/status`, { status });
-      alert('✅ Status updated successfully');
+      alert('Status updated successfully');
       fetchData();
     } catch {
-      alert('❌ Status update failed');
+      alert('Status update failed');
     }
   };
 
   return (
-    <div className="p-6 bg-gradient-to-br from-black to-red-900 text-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-8">🔄 Update Delivery Status</h1>
+    <div className="p-6 bg-white text-gray-900 min-h-screen">
+      <h1 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 text-transparent bg-clip-text">
+        UPDATE DELIVERY STATUS
+      </h1>
+
       {deliveries.length === 0 ? (
-        <div className="bg-red-100 text-red-800 p-4 rounded text-center">🚫 No deliveries assigned.</div>
+        <div className="bg-yellow-100 text-yellow-800 p-4 rounded text-center border border-yellow-200 shadow-sm">
+          No deliveries assigned.
+        </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full border text-sm bg-white text-gray-800 rounded shadow-lg">
-            <thead className="bg-red-700 text-white">
+        <div className="overflow-x-auto rounded shadow border border-gray-200">
+          <table className="min-w-full text-sm bg-white text-gray-800">
+            <thead className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white">
               <tr>
                 <th className="p-3 border">Order ID</th>
                 <th className="p-3 border">Customer Name</th>
@@ -52,20 +57,33 @@ function UpdateStatus() {
                 const latest = d.statusUpdates[d.statusUpdates.length - 1]?.status || 'N/A';
                 return (
                   <tr key={d._id} className="hover:bg-gray-100 transition">
-                    <td className="p-3 border text-center">{d.orderId?._id || 'N/A'}</td>
+                    <td className="p-3 border text-center font-medium">{d.orderId?._id || 'N/A'}</td>
                     <td className="p-3 border text-center">{d.customer?.name || 'N/A'}</td>
                     <td className="p-3 border text-center">{d.customer?.email || 'N/A'}</td>
                     <td className="p-3 border text-center text-blue-700 font-semibold">{latest}</td>
                     <td className="p-3 border text-center">
-                      <select onChange={(e) => setStatusMap({ ...statusMap, [d._id]: e.target.value })} value={statusMap[d._id] || ''} className="border rounded p-1 text-sm">
+                      <select
+                        onChange={(e) =>
+                          setStatusMap({ ...statusMap, [d._id]: e.target.value })
+                        }
+                        value={statusMap[d._id] || ''}
+                        className="border rounded p-1 text-sm focus:ring-yellow-400 focus:outline-none"
+                      >
                         <option value="">Select</option>
                         {statusOptions.map((opt) => (
-                          <option key={opt} value={opt}>{opt}</option>
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
                         ))}
                       </select>
                     </td>
                     <td className="p-3 border text-center">
-                      <button onClick={() => handleUpdate(d._id)} className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Update</button>
+                      <button
+                        onClick={() => handleUpdate(d._id)}
+                        className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white px-3 py-1 rounded shadow"
+                      >
+                        Update
+                      </button>
                     </td>
                   </tr>
                 );

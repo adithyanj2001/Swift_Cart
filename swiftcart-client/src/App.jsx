@@ -1,4 +1,7 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google'; //Added for Google Login
+import 'leaflet/dist/leaflet.css';
+
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import AdminDashboard from './pages/admin/Dashboard';
@@ -40,143 +43,145 @@ import CategoryPage from './pages/customer/CategoryPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<CustomerHome />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <GoogleOAuthProvider clientId="142972845475-v74nqmnqj1mu0d5ffqijp0crl6bau9bg.apps.googleusercontent.com">
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<CustomerHome />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* Customer Routes */}
-        <Route
-          path="/customer"
-          element={
-            <PrivateRoute allowedRoles={['customer']}>
-              <CustomerLayout />
-            </PrivateRoute>
-          }
-        >
-          <Route path="cart" element={<Cart />} />
-          <Route path="wishlist" element={<Wishlist />} />
-          <Route path="profile" element={<CustomerProfile />} />
-          <Route path="orders" element={<CustomerOrders />} />
-          <Route path="payment-success" element={<PaymentSuccess />} />
-          <Route path="/customer/category/:categoryName" element={<CategoryPage />} /> {/* ✅ Added route */}
-        </Route>
+          {/* Customer Routes */}
+          <Route
+            path="/customer"
+            element={
+              <PrivateRoute allowedRoles={['customer']}>
+                <CustomerLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route path="cart" element={<Cart />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="profile" element={<CustomerProfile />} />
+            <Route path="orders" element={<CustomerOrders />} />
+            <Route path="payment-success" element={<PaymentSuccess />} />
+            <Route path="/customer/category/:categoryName" element={<CategoryPage />} />
+          </Route>
 
-        {/* Admin Routes */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <PrivateRoute allowedRoles={['admin']}>
-              <SidebarLayout>
-                <AdminDashboard />
-              </SidebarLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/vendors"
-          element={
-            <PrivateRoute allowedRoles={['admin']}>
-              <SidebarLayout>
-                <ManageVendors />
-              </SidebarLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/users"
-          element={
-            <PrivateRoute allowedRoles={['admin']}>
-              <SidebarLayout>
-                <ManageCustomers />
-              </SidebarLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/agents"
-          element={
-            <PrivateRoute allowedRoles={['admin']}>
-              <SidebarLayout>
-                <ManageAgents />
-              </SidebarLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/sales-chart"
-          element={
-            <PrivateRoute allowedRoles={['admin']}>
-              <SidebarLayout>
-                <SalesChart />
-              </SidebarLayout>
-            </PrivateRoute>
-          }
-        />
+          {/* Admin Routes */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PrivateRoute allowedRoles={['admin']}>
+                <SidebarLayout>
+                  <AdminDashboard />
+                </SidebarLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/vendors"
+            element={
+              <PrivateRoute allowedRoles={['admin']}>
+                <SidebarLayout>
+                  <ManageVendors />
+                </SidebarLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <PrivateRoute allowedRoles={['admin']}>
+                <SidebarLayout>
+                  <ManageCustomers />
+                </SidebarLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/agents"
+            element={
+              <PrivateRoute allowedRoles={['admin']}>
+                <SidebarLayout>
+                  <ManageAgents />
+                </SidebarLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/sales-chart"
+            element={
+              <PrivateRoute allowedRoles={['admin']}>
+                <SidebarLayout>
+                  <SalesChart />
+                </SidebarLayout>
+              </PrivateRoute>
+            }
+          />
 
-        {/* Vendor Routes */}
-        <Route
-          path="/vendor/dashboard"
-          element={
-            <PrivateRoute allowedRoles={['vendor']}>
-              <VendorDashboard />
-            </PrivateRoute>
-          }
-        >
-          <Route path="add-products" element={<AddProducts />} />
-          <Route path="products" element={<Products />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="homepage" element={<HomePage />} />
-          <Route path="stock-tracker" element={<StockTracker />} />
-          <Route path="sales" element={<VendorSales />} />
-          <Route path="revenue-chart" element={<VendorRevenueChart />} /> 
-        </Route>
+          {/* Vendor Routes */}
+          <Route
+            path="/vendor/dashboard"
+            element={
+              <PrivateRoute allowedRoles={['vendor']}>
+                <VendorDashboard />
+              </PrivateRoute>
+            }
+          >
+            <Route path="add-products" element={<AddProducts />} />
+            <Route path="products" element={<Products />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="homepage" element={<HomePage />} />
+            <Route path="stock-tracker" element={<StockTracker />} />
+            <Route path="sales" element={<VendorSales />} />
+            <Route path="revenue-chart" element={<VendorRevenueChart />} /> 
+          </Route>
 
-        {/* Agent Routes */}
-        <Route
-          path="/agent/orders"
-          element={
-            <PrivateRoute allowedRoles={['agent']}>
-              <AgentSidebarLayout>
-                <AgentOrders />
-              </AgentSidebarLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/agent/assigned-orders"
-          element={
-            <PrivateRoute allowedRoles={['agent']}>
-              <AgentSidebarLayout>
-                <AssignedOrders />
-              </AgentSidebarLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/agent/update-status"
-          element={
-            <PrivateRoute allowedRoles={['agent']}>
-              <AgentSidebarLayout>
-                <UpdateStatus />
-              </AgentSidebarLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/agent/delivery-timeline"
-          element={
-            <PrivateRoute allowedRoles={['agent']}>
-              <AgentSidebarLayout>
-                <DeliveryTimeline />
-              </AgentSidebarLayout>
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          {/* Agent Routes */}
+          <Route
+            path="/agent/orders"
+            element={
+              <PrivateRoute allowedRoles={['agent']}>
+                <AgentSidebarLayout>
+                  <AgentOrders />
+                </AgentSidebarLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/agent/assigned-orders"
+            element={
+              <PrivateRoute allowedRoles={['agent']}>
+                <AgentSidebarLayout>
+                  <AssignedOrders />
+                </AgentSidebarLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/agent/update-status"
+            element={
+              <PrivateRoute allowedRoles={['agent']}>
+                <AgentSidebarLayout>
+                  <UpdateStatus />
+                </AgentSidebarLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/agent/delivery-timeline"
+            element={
+              <PrivateRoute allowedRoles={['agent']}>
+                <AgentSidebarLayout>
+                  <DeliveryTimeline />
+                </AgentSidebarLayout>
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   );
 }
 

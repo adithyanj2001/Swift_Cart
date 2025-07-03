@@ -71,10 +71,10 @@ const ManageVendors = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 py-10 bg-gray-50">
+    <div className="min-h-screen px-4 py-10 bg-gradient-to-br">
       {/* Add Vendor Form */}
-      <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg border">
-        <h2 className="text-3xl font-bold text-center text-red-700 mb-6 tracking-wide">Add New Vendor</h2>
+      <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+        <h2 className="text-3xl font-bold text-center text-yellow-700 mb-6 tracking-wide">Add New Vendor</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
           {['name', 'email', 'phone', 'address', 'city'].map((field) => (
             <input
@@ -85,30 +85,34 @@ const ManageVendors = () => {
               onChange={handleChange}
               required
               placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-              className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="px-4 py-2 border border-yellow-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           ))}
-          <button type="submit" className="w-full py-2 bg-red-700 hover:bg-red-800 text-white font-semibold rounded shadow">
+          <button
+            type="submit"
+            className="w-full py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded shadow transition"
+          >
             Add Vendor
           </button>
         </form>
+
         <button
           onClick={() => setShowVendors(!showVendors)}
-          className="mt-4 w-full py-2 bg-gray-800 hover:bg-gray-900 text-white font-semibold rounded shadow"
+          className="mt-4 w-full py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded shadow transition"
         >
-          {showVendors ? 'Hide Vendor List' : 'View Vendor List'}
+          {showVendors ? 'Hide Vendor List' : ' View Vendor List'}
         </button>
       </div>
 
       {/* Vendor Table */}
       {showVendors && (
-        <div className="max-w-6xl mx-auto mt-10 bg-white border shadow-lg rounded-xl overflow-hidden">
+        <div className="max-w-6xl mx-auto mt-10 bg-white shadow-lg rounded-xl overflow-hidden">
           <div className="px-6 py-4 border-b flex items-center justify-between">
-            <h3 className="text-xl font-bold text-gray-700">Vendor List</h3>
+            <h3 className="text-xl font-bold text-yellow-700">Vendor List</h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm text-gray-700">
-              <thead className="bg-gray-100 text-gray-700 uppercase tracking-wider">
+            <table className="min-w-full text-sm text-gray-800">
+              <thead className="bg-yellow-100 text-yellow-800 uppercase tracking-wide">
                 <tr>
                   <th className="px-6 py-3 border">Name</th>
                   <th className="px-6 py-3 border">Email</th>
@@ -119,7 +123,7 @@ const ManageVendors = () => {
               </thead>
               <tbody>
                 {vendors.length > 0 ? vendors.map((v) => (
-                  <tr key={v._id} className="hover:bg-gray-50 transition border-t">
+                  <tr key={v._id} className="hover:bg-yellow-50 transition border-t">
                     {editId === v._id ? (
                       <>
                         <td className="px-6 py-3 border">
@@ -135,7 +139,7 @@ const ManageVendors = () => {
                           <input name="city" value={editData.city} onChange={handleEditChange} className="w-full border px-2 py-1 rounded" />
                         </td>
                         <td className="px-6 py-3 border text-center space-x-2">
-                          <button onClick={() => handleEditSubmit(v._id)} className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+                          <button onClick={() => handleEditSubmit(v._id)} className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
                             Save
                           </button>
                           <button onClick={() => setEditId(null)} className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
@@ -150,7 +154,7 @@ const ManageVendors = () => {
                         <td className="px-6 py-3 border">{v.phone}</td>
                         <td className="px-6 py-3 border">{v.city}</td>
                         <td className="px-6 py-3 border text-center space-x-2">
-                          <button onClick={() => handleEdit(v)} className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+                          <button onClick={() => handleEdit(v)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
                             Edit
                           </button>
                           <button onClick={() => handleDelete(v._id)} className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">

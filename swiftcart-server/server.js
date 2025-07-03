@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 dotenv.config();
 connectDB();
@@ -17,6 +18,7 @@ app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/delivery', require('./routes/deliveryRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/wishlist', require('./routes/wishlistRoutes'));
+app.use('/api/payment', paymentRoutes);
 
 const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
