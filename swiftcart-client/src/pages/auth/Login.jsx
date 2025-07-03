@@ -4,7 +4,7 @@ import API from '../../services/api';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
-
+import { toast } from 'react-toastify'; // Toast import
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -19,7 +19,8 @@ function Login() {
       const res = await API.post('/auth/login', form);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
-      alert('Login successful');
+
+      toast.success('Login successful '); // Replaced alert
 
       const role = res.data.user.role;
       if (role === 'admin') navigate('/admin/dashboard');
@@ -27,7 +28,7 @@ function Login() {
       else if (role === 'agent') navigate('/agent/orders');
       else navigate('/');
     } catch (err) {
-      alert(err.response?.data?.message || 'Login failed');
+      toast.error(err.response?.data?.message || 'Login failed '); // Replaced alert
     }
   };
 
@@ -42,13 +43,15 @@ function Login() {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
 
+      toast.success('Google login successful '); // New toast
+
       const role = res.data.user.role;
       if (role === 'admin') navigate('/admin/dashboard');
       else if (role === 'vendor') navigate('/vendor/dashboard/homepage');
       else if (role === 'agent') navigate('/agent/orders');
       else navigate('/');
     } catch (err) {
-      alert('Google login error');
+      toast.error('Google login error '); 
     }
   };
 
@@ -60,9 +63,7 @@ function Login() {
           "url('https://i.pinimg.com/736x/16/1a/61/161a61774b7e35ca9e443a977a6038dd.jpg')",
       }}
     >
-      {/* Semi-transparent overlay */}
       <div className="w-full h-full min-h-screen bg-white/30 backdrop-blur-sm flex flex-col items-center justify-center px-4">
-        {/* ✨ Stylized Header */}
         <div className="text-center mb-10 mt-8">
           <p className="text-sm uppercase tracking-widest text-gray-700">welcome back</p>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-fuchsia-500 to-purple-700 animate-pulse drop-shadow-sm mt-2">
@@ -70,9 +71,7 @@ function Login() {
           </h1>
         </div>
 
-        {/* Form Container */}
         <div className="flex flex-col md:flex-row w-full max-w-6xl bg-white rounded-xl overflow-hidden shadow-2xl">
-          {/* Left Illustration */}
           <div className="md:w-1/2 w-full h-80 md:h-auto">
             <img
               src="https://img.freepik.com/free-vector/no-time-concept-illustration_114360-4290.jpg?semt=ais_hybrid&w=740"
@@ -81,7 +80,6 @@ function Login() {
             />
           </div>
 
-          {/* Right Form */}
           <div className="md:w-1/2 w-full flex items-center justify-center p-8">
             <div className="w-full max-w-md">
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -132,11 +130,10 @@ function Login() {
                 <GoogleLogin
                   onSuccess={(credentialResponse) => {
                     const decoded = jwtDecode(credentialResponse.credential);
-
                     handleGoogleLogin(decoded);
                   }}
                   onError={() => {
-                    alert('Google login failed');
+                    toast.error('Google login failed'); 
                   }}
                 />
               </div>

@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
-// 🔐 Generate JWT token
+// Generate JWT token
 const generateToken = (user) => {
   return jwt.sign(
     { id: user._id, role: user.role },
@@ -10,7 +10,7 @@ const generateToken = (user) => {
   );
 };
 
-// ✅ Register new user
+// Register new user
 const register = async (req, res) => {
   const { name, email, password, role, phone, region, address, place, category } = req.body;
 
@@ -54,7 +54,7 @@ const register = async (req, res) => {
   }
 };
 
-// ✅ Login
+// Login
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -82,7 +82,7 @@ const login = async (req, res) => {
   }
 };
 
-// ✅ Get logged-in user info
+// Get logged-in user info
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('-password');
@@ -94,7 +94,7 @@ const getMe = async (req, res) => {
   }
 };
 
-// ✅ Google Login
+// Google Login
 const googleLogin = async (req, res) => {
   const { email, name, picture } = req.body;
 

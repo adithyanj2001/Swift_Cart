@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../services/api';
+import { toast } from 'react-toastify'; 
 
 function DeliveryTimeline() {
   const [deliveries, setDeliveries] = useState([]);
@@ -7,7 +8,7 @@ function DeliveryTimeline() {
   useEffect(() => {
     API.get('/delivery')
       .then((res) => setDeliveries(res.data))
-      .catch(() => alert('Failed to load delivery timeline'));
+      .catch(() => toast.error('Failed to load delivery timeline'));
   }, []);
 
   const getStatusIcon = (status) => {

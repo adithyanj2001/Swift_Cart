@@ -1,50 +1,57 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import { GoogleOAuthProvider } from '@react-oauth/google'; //Added for Google Login
-import 'leaflet/dist/leaflet.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'leaflet/dist/leaflet.css'; // Map styles
 
+// Auth
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import AdminDashboard from './pages/admin/Dashboard';
-import AgentOrders from './pages/agent/AgentDashboard';
-import CustomerHome from './pages/customer/CustomerHome';
-import PrivateRoute from './components/PrivateRoute';
 
-// Admin Pages
+// Admin
+import AdminDashboard from './pages/admin/Dashboard';
 import SidebarLayout from './pages/admin/SidebarLayout';
 import ManageVendors from './pages/admin/ManageVendors';
 import ManageCustomers from './pages/admin/ManageCustomers';
 import ManageAgents from './pages/admin/ManageAgents';
 import SalesChart from './pages/admin/SalesChart';
 
-// Agent Pages
+// Agent
+import AgentOrders from './pages/agent/AgentDashboard';
 import AgentSidebarLayout from './pages/agent/AgentSidebarLayout';
 import AssignedOrders from './pages/agent/AssignedOrders';
 import UpdateStatus from './pages/agent/UpdateStatus';
 import DeliveryTimeline from './pages/agent/DeliveryTimeline';
 
-// Vendor Pages
+// Vendor
 import VendorDashboard from './pages/vendor/VendorDashboard';
 import HomePage from './pages/vendor/VendorHome';
 import AddProducts from './pages/vendor/VendorAddProduct';
 import Products from './pages/vendor/VendorProducts';
 import StockTracker from './pages/vendor/VendorManageStock';
 import VendorSales from './pages/vendor/VendorViewSales';
-import Orders from './pages/vendor/VendorOrders'; 
-import VendorRevenueChart from './pages/vendor/VendorRevenueChart'; 
+import Orders from './pages/vendor/VendorOrders';
+import VendorRevenueChart from './pages/vendor/VendorRevenueChart';
 
-// Customer Pages & Layout
+// Customer
+import CustomerHome from './pages/customer/CustomerHome';
 import Wishlist from './pages/customer/Wishlist';
 import Cart from './pages/customer/CartPage';
 import CustomerProfile from './pages/customer/CustomerProfile';
 import CustomerOrders from './pages/customer/CustomerOrders';
 import CustomerLayout from './pages/customer/CustomerLayout';
-import PaymentSuccess from './pages/customer/PaymentSuccess'; 
-import CategoryPage from './pages/customer/CategoryPage'; 
+import PaymentSuccess from './pages/customer/PaymentSuccess';
+import CategoryPage from './pages/customer/CategoryPage';
+
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <GoogleOAuthProvider clientId="142972845475-v74nqmnqj1mu0d5ffqijp0crl6bau9bg.apps.googleusercontent.com">
       <BrowserRouter>
+        {/* Global Toast Container */}
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar newestOnTop />
+
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<CustomerHome />} />
@@ -135,7 +142,7 @@ function App() {
             <Route path="homepage" element={<HomePage />} />
             <Route path="stock-tracker" element={<StockTracker />} />
             <Route path="sales" element={<VendorSales />} />
-            <Route path="revenue-chart" element={<VendorRevenueChart />} /> 
+            <Route path="revenue-chart" element={<VendorRevenueChart />} />
           </Route>
 
           {/* Agent Routes */}

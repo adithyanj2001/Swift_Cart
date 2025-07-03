@@ -1,8 +1,8 @@
 const Razorpay = require('razorpay');
 
 exports.createOrder = async (req, res) => {
-  console.log('🔐 Razorpay ENV CHECK - KEY_ID:', process.env.RAZORPAY_KEY_ID);
-  console.log('🔐 Razorpay ENV CHECK - SECRET:', process.env.RAZORPAY_SECRET);
+  console.log('Razorpay ENV CHECK - KEY_ID:', process.env.RAZORPAY_KEY_ID);
+  console.log('Razorpay ENV CHECK - SECRET:', process.env.RAZORPAY_SECRET);
 
   const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,

@@ -2,7 +2,7 @@ const Delivery = require('../models/Delivery');
 const Order = require('../models/Order');
 const User = require('../models/User');
 
-// Agent: Get assigned deliveries with order, customer, and product details
+// Get assigned deliveries with order, customer, and product details
 exports.getAssignedDeliveries = async (req, res) => {
   try {
     console.log("Agent user:", req.user);
@@ -64,7 +64,7 @@ exports.getAssignedDeliveries = async (req, res) => {
   }
 };
 
-// Agent: Update delivery status
+// Update delivery status
 exports.updateStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;

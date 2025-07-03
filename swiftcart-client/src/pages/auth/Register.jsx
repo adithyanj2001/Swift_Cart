@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import API from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; 
 
 function Register() {
   const [form, setForm] = useState({
@@ -34,15 +35,15 @@ function Register() {
 
     // Validate 10-digit phone for vendor and agent
     if ((role === 'vendor' || role === 'agent') && !/^\d{10}$/.test(phone)) {
-      return alert('Please enter a valid 10-digit phone number');
+      return toast.error('Please enter a valid 10-digit phone number');
     }
 
     try {
       await API.post('/auth/register', form);
-      alert('Registered successfully. Now login.');
+      toast.success('Registered successfully. Now login ');
       navigate('/login');
     } catch (err) {
-      alert(err.response?.data?.message || 'Registration failed');
+      toast.error(err.response?.data?.message || 'Registration failed ');
     }
   };
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../services/api';
 import { FaBox, FaCheckCircle, FaClock, FaUser } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const statusColors = {
   Assigned: 'bg-yellow-100 text-yellow-800',
@@ -27,7 +28,7 @@ export default function AgentDashboard() {
         setFiltered(deliveryRes.data);
         setAgent(userRes.data);
       } catch (err) {
-        alert('Failed to load dashboard data');
+        toast.error('Failed to load dashboard data');
       }
     };
     fetchData();

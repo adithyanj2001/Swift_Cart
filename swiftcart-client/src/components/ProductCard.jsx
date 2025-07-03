@@ -1,6 +1,7 @@
 import React from 'react';
 import API from "../services/api";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; 
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
@@ -10,27 +11,27 @@ function ProductCard({ product }) {
     e.stopPropagation();
     try {
       await API.post('/cart', { productId: product._id, qty: 1 });
-      alert('Added to cart!');
+      toast.success('Added to cart!');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to add to cart');
+      toast.error(err.response?.data?.message || 'Failed to add to cart');
     }
   };
 
   const handleAddToWishlist = async (e) => {
     e.stopPropagation();
     try {
-      if (!product._id) return alert("Product ID not found");
+      if (!product._id) return  toast.error("Product ID not found");
 
       await API.post('/wishlist', { productId: product._id });
-      alert('Added to wishlist!');
+      toast.success('Added to wishlist!');
     } catch (err) {
       const msg = err.response?.data?.message;
       if (msg === 'Already in wishlist') {
-        alert('Item already in wishlist.');
+        toast.error('Item already in wishlist.');
       } else if (msg === 'Already in cart') {
-        alert('Item already in cart.');
+        toast.error('Item already in cart.');
       } else {
-        alert(msg || 'Failed to add to wishlist');
+        toast.error(msg || 'Failed to add to wishlist');
       }
     }
   };

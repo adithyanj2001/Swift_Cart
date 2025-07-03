@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../../services/api';
+import { toast } from 'react-toastify'; 
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -23,7 +24,7 @@ const CartPage = () => {
       })
       .catch((err) => {
         console.error('Failed to load cart:', err);
-        alert('Failed to load cart.');
+        toast.error('Failed to load cart.');
         setLoading(false);
       });
   }, []);
@@ -35,7 +36,7 @@ const CartPage = () => {
       setSelectedItems(prev => prev.filter(id => id !== productId));
     } catch (err) {
       console.error('Remove error:', err.response?.data?.message || err.message);
-      alert(err.response?.data?.message || 'Error removing item');
+      toast.error(err.response?.data?.message || 'Error removing item');
     }
   };
 
@@ -57,7 +58,7 @@ const CartPage = () => {
         const updatedValue = (() => {
           if (name === 'phone') return value.replace(/\D/g, '').slice(0, 10);
           if (name === 'cvv') return value.replace(/\D/g, '').slice(0, 3);
-          if (name === 'cardNumber') return value.replace(/\D/g, '').slice(0, 16); // ✅ remove all non-digits
+          if (name === 'cardNumber') return value.replace(/\D/g, '').slice(0, 16); // remove all non-digits
           return value;
         })();
         setForm(prev => ({ ...prev, [name]: updatedValue }));
@@ -75,18 +76,18 @@ const CartPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // 👉 Razorpay handler
+  // Razorpay handler
   const handleOnlinePayment = async () => {
     const totalAmount = getSelectedTotal();
 
     try {
-      // 1. Create order from backend
+      // Create order from backend
       const { data: order } = await API.post('/payment/create-order', {
         amount: totalAmount
       });
 
       const options = {
-        key: 'rzp_test_f6eGg9xIexcdCg', // 🔁 Replace with your real key ID
+        key: 'rzp_test_f6eGg9xIexcdCg', //key ID
         amount: order.amount,
         currency: order.currency,
         name: "Swift Cart",
@@ -95,7 +96,7 @@ const CartPage = () => {
         handler: async function (response) {
           console.log("Razorpay Success:", response);
 
-          // 2. Place order after payment success
+          // Place order after payment success
           const placeRes = await API.post('/orders', {
             paymentMethod: 'Online',
             name: form.name,
@@ -109,7 +110,7 @@ const CartPage = () => {
           setCartItems(prev => prev.filter(item => !selectedItems.includes(item.productId._id)));
           setSelectedItems([]);
           setShowCheckout(false);
-          alert("Payment successful! Order placed ✅");
+          toast.success("Payment successful! Order placed ");
           navigate('/customer/payment-success');
         },
         prefill: {
@@ -126,12 +127,12 @@ const CartPage = () => {
       rzp.open();
     } catch (err) {
       console.error('Razorpay Error:', err);
-      alert("Payment failed");
+      toast.error("Payment failed");
     }
   };
 
   const handlePayment = async () => {
-    if (selectedItems.length === 0) return alert("Please select items to order.");
+    if (selectedItems.length === 0) return toast.error("Please select items to order.");
     if (!validateForm()) return;
 
     if (form.paymentMethod === 'Online') {
@@ -151,11 +152,11 @@ const CartPage = () => {
         setCartItems(prev => prev.filter(item => !selectedItems.includes(item.productId._id)));
         setSelectedItems([]);
         setShowCheckout(false);
-        alert("Order placed successfully!");
+        toast.success("Order placed successfully!");
         navigate('/customer/payment-success');
       } catch (err) {
         console.error("Order failed:", err);
-        alert('Order failed: ' + (err.response?.data?.message || 'Unknown server error'));
+        toast.error('Order failed: ' + (err.response?.data?.message || 'Unknown server error'));
       }
     }
   };

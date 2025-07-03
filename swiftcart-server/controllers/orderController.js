@@ -305,7 +305,7 @@ exports.getVendorSalesSummary = async (req, res) => {
   }
 };
 
-// 📊 Vendor Dashboard Stats API
+// Vendor Dashboard Stats API
 exports.getVendorDashboardStats = async (req, res) => {
   try {
     const vendorId = req.user._id;

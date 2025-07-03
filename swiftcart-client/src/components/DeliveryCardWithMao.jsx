@@ -1,4 +1,3 @@
-// components/DeliveryCardWithMap.jsx
 import { useEffect } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -25,11 +24,11 @@ export default function DeliveryCardWithMap({ delivery, onUpdateStatus }) {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'Assigned': return '📦';
-      case 'Dispatched': return '🚚';
-      case 'In Transit': return '🛣️';
-      case 'Delivered': return '✅';
-      default: return 'ℹ️';
+      case 'Assigned': return ;
+      case 'Dispatched': return ;
+      case 'In Transit': return ;
+      case 'Delivered': return ;
+      default: return ;
     }
   };
 
@@ -59,13 +58,13 @@ export default function DeliveryCardWithMap({ delivery, onUpdateStatus }) {
           onClick={() => onUpdateStatus(delivery._id, 'Dispatched')}
           className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
         >
-          🚚 Mark Dispatched
+          Mark Dispatched
         </button>
         <button
           onClick={() => onUpdateStatus(delivery._id, 'Delivered')}
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
         >
-          ✅ Mark Delivered
+          Mark Delivered
         </button>
       </div>
     </div>

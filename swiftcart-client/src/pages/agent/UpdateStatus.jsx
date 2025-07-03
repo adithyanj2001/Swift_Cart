@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../services/api';
+import { toast } from 'react-toastify';
 
 const statusOptions = ['Assigned', 'Dispatched', 'In Transit', 'Delivered'];
 
@@ -10,7 +11,7 @@ function UpdateStatus() {
   const fetchData = () => {
     API.get('/delivery')
       .then((res) => setDeliveries(res.data))
-      .catch(() => alert('Failed to fetch deliveries'));
+      .catch(() => toast.error('Failed to fetch deliveries'));
   };
 
   useEffect(() => {
@@ -19,13 +20,13 @@ function UpdateStatus() {
 
   const handleUpdate = async (id) => {
     const status = statusMap[id];
-    if (!status) return alert('Select a status');
+    if (!status) return toast.error('Select a status');
     try {
       await API.put(`/delivery/${id}/status`, { status });
-      alert('Status updated successfully');
+      toast.success('Status updated successfully');
       fetchData();
     } catch {
-      alert('Status update failed');
+      toast.error('Status update failed');
     }
   };
 

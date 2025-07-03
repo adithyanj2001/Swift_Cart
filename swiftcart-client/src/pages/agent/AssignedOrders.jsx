@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import API from '../../services/api';
+import { toast } from 'react-toastify';
 
 function AssignedOrders() {
   const [deliveries, setDeliveries] = useState([]);
@@ -13,17 +14,17 @@ function AssignedOrders() {
       const res = await API.get('/delivery');
       setDeliveries(res.data);
     } catch (err) {
-      alert(' Failed to load deliveries');
+      toast.error(' Failed to load deliveries');
     }
   };
 
   const updateStatus = async (id, status) => {
     try {
       await API.put(`/delivery/${id}/status`, { status });
-      alert(`Status updated to ${status}`);
+      toast.success(`Status updated to ${status}`);
       fetchDeliveries();
     } catch (err) {
-      alert('Failed to update status');
+      toast.error('Failed to update status');
     }
   };
 

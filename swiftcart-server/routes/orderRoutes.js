@@ -21,6 +21,6 @@ router.get('/vendor', authMiddleware, roleMiddleware(['vendor']), getVendorOrder
 router.get('/invoice/:id', authMiddleware, downloadInvoice);
 router.get('/vendor/sales-summary', authMiddleware, roleMiddleware(['vendor']), getVendorSalesSummary);
 router.get('/vendor/revenue-chart', authMiddleware, roleMiddleware(['vendor']), getVendorRevenueChart);
-router.get('/vendor/dashboard-stats', authMiddleware, roleMiddleware(['vendor']), getVendorDashboardStats); // ✅ ADD THIS
+router.get('/vendor/dashboard-stats', authMiddleware, roleMiddleware(['vendor']), getVendorDashboardStats); 
 
 module.exports = router;
