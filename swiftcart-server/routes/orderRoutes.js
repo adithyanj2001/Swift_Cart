@@ -6,9 +6,10 @@ const {
   getMyOrders,
   getVendorOrders,
   downloadInvoice,
-  getVendorSalesSummary, // included
+  getVendorSalesSummary,
+  getVendorDashboardStats, 
+  getVendorRevenueChart
 } = require('../controllers/orderController');
-const { getVendorRevenueChart } = require('../controllers/orderController');
 
 const authMiddleware = require('../middleware/authMiddleware');
 const roleMiddleware = require('../middleware/roleMiddleware');
@@ -20,6 +21,6 @@ router.get('/vendor', authMiddleware, roleMiddleware(['vendor']), getVendorOrder
 router.get('/invoice/:id', authMiddleware, downloadInvoice);
 router.get('/vendor/sales-summary', authMiddleware, roleMiddleware(['vendor']), getVendorSalesSummary);
 router.get('/vendor/revenue-chart', authMiddleware, roleMiddleware(['vendor']), getVendorRevenueChart);
-
+router.get('/vendor/dashboard-stats', authMiddleware, roleMiddleware(['vendor']), getVendorDashboardStats); // ✅ ADD THIS
 
 module.exports = router;
