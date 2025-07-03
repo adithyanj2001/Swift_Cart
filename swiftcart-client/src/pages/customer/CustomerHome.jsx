@@ -1,3 +1,4 @@
+// ... (all imports stay the same)
 import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -256,7 +257,6 @@ function CustomerHome() {
             </div>
           </Slider>
         </section>
-
 
         {/* Best Deals */}
         <section className="bg-white py-4 px-4 mb-10 relative">

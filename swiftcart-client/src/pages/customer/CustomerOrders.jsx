@@ -146,7 +146,7 @@ const CustomerOrders = () => {
               <div className="flex flex-wrap gap-3 mt-4">
                 <button
                   onClick={() => handleDownloadInvoice(order._id)}
-                  className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700"
+                  className="bg-purple-900 text-white px-4 py-1 rounded hover:bg-purple-700"
                 >
                   Download Invoice
                 </button>
@@ -155,7 +155,7 @@ const CustomerOrders = () => {
                   onClick={() =>
                     setExpandedOrderId(expandedOrderId === order._id ? null : order._id)
                   }
-                  className="bg-indigo-600 text-white px-4 py-1 rounded hover:bg-indigo-700"
+                  className="bg-gray-700 text-white px-4 py-1 rounded hover:bg-gray-500"
                 >
                   {expandedOrderId === order._id ? 'Hide Delivery Status' : 'View Delivery Status'}
                 </button>

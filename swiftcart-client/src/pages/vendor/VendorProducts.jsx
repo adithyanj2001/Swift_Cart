@@ -64,33 +64,33 @@ function Products() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {products.map((product) => (
             <div key={product._id} className="bg-violet-100 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-  <img
-    src={product.imageUrl}
-    alt={product.name}
-    className="h-48 w-full object-cover"
-  />
-  <div className="p-4 space-y-2">
-    <h3 className="text-xl font-bold text-gray-800">{product.name}</h3>
-    <p className="text-sm text-gray-700">Category: {product.category}</p>
-    <p className="text-lg font-semibold text-gray-900">₹{product.price}</p>
-    <p className="text-sm text-gray-600">Stock: {product.stock}</p>
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className="h-48 w-full object-cover"
+            />
+            <div className="p-4 space-y-2">
+              <h3 className="text-xl font-bold text-gray-800">{product.name}</h3>
+              <p className="text-sm text-gray-700">Category: {product.category}</p>
+              <p className="text-lg font-semibold text-gray-900">₹{product.price}</p>
+              <p className="text-sm text-gray-600">Stock: {product.stock}</p>
 
-    <div className="flex justify-between pt-2">
-      <button
-        onClick={() => handleEdit(product)}
-        className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium"
-      >
-        Edit
-      </button>
-      <button
-        onClick={() => handleDelete(product._id)}
-        className="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium"
-      >
-        Delete
-      </button>
-    </div>
-  </div>
-</div>
+              <div className="flex justify-between pt-2">
+                <button
+                  onClick={() => handleEdit(product)}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(product._id)}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
 
           ))}
         </div>

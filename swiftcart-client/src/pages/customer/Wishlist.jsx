@@ -37,8 +37,8 @@ function Wishlist() {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">My Wishlist</h1>
+    <div className="p-6 min-h-screen bg-gradient-to-l from-white to-gray-500">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800 text-center">My Wishlist</h1>
 
       {wishlist.length === 0 ? (
         <p className="text-center text-gray-600">Your wishlist is empty.</p>
@@ -49,26 +49,29 @@ function Wishlist() {
             if (!product) return null;
 
             return (
-              <div key={item._id} className="border rounded-xl shadow-md bg-white hover:shadow-lg transition p-4 flex flex-col">
+              <div
+                key={item._id}
+                className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-3 flex flex-col max-w-xs sm:max-w-sm mx-auto w-full"
+              >
                 <img
                   src={product.imageUrl || 'https://via.placeholder.com/150'}
                   alt={product.name}
-                  className="h-40 w-full object-cover rounded mb-4"
+                  className="w-full h-40 sm:h-44 md:h-48 object-contain bg-gray-100 rounded mb-3"
                 />
-                <h3 className="text-lg font-semibold text-gray-900 truncate">{product.name}</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{product.name}</h3>
                 <p className="text-sm text-gray-500 mb-1">{product.category}</p>
-                <p className="text-md font-bold text-green-700">₹{product.price}</p>
+                <p className="text-sm sm:text-md font-bold text-green-700">₹{product.price}</p>
 
                 <div className="mt-3 flex gap-2">
                   <button
                     onClick={() => addToCart(product._id, item._id)}
-                    className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 text-sm"
+                    className="flex-1 bg-purple-900 text-white py-1.5 rounded hover:bg-purple-700 text-xs sm:text-sm"
                   >
                     Add to Cart
                   </button>
                   <button
                     onClick={() => removeFromWishlist(item._id)}
-                    className="bg-red-500 text-white px-3 rounded hover:bg-red-600 text-sm"
+                    className="bg-red-500 text-white px-3 rounded hover:bg-red-600 text-xs sm:text-sm"
                   >
                     Remove
                   </button>

@@ -21,18 +21,22 @@ export default function VendorOrders() {
   }, []);
 
   return (
-    <div className="p-6 text-white">
-      <h1 className="text-3xl font-bold mb-6 text-red-500">📦 Vendor Orders</h1>
+    <div className="min-h-screen  px-6 py-10">
+      {/* Page Heading */}
+      <h1 className="text-3xl font-extrabold mb-6 text-center bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-700 text-transparent bg-clip-text">
+        Vendor Orders
+      </h1>
 
+      {/* Content */}
       {loading ? (
-        <div className="text-gray-400">Loading orders...</div>
+        <div className="text-gray-500 text-center">Loading orders...</div>
       ) : orders.length === 0 ? (
-        <div className="text-gray-400">No orders found.</div>
+        <div className="text-gray-500 text-center">No orders found.</div>
       ) : (
-        <div className="overflow-x-auto shadow rounded-lg">
-          <table className="min-w-full bg-gradient-to-r from-black to-red-900 rounded-lg">
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white rounded-xl shadow-md">
             <thead>
-              <tr className="text-left text-red-200 border-b border-red-800">
+              <tr className="text-left bg-purple-200 text-purple-900 font-semibold text-sm">
                 <th className="py-3 px-4">Customer</th>
                 <th className="py-3 px-4">Products & Delivery</th>
                 <th className="py-3 px-4 text-right">Total (₹)</th>
@@ -43,17 +47,15 @@ export default function VendorOrders() {
               {orders.map((order, index) => (
                 <tr
                   key={order._id}
-                  className={index % 2 === 0 ? 'bg-black/60' : 'bg-black/40'}
+                  className={index % 2 === 0 ? 'bg-purple-50' : 'bg-purple-100/60'}
                 >
-                  <td className="py-3 px-4">
-                    <div>{order.userId?.name || 'Unknown User'}</div>
-                    <div className="text-sm text-gray-400">
-                      {order.userId?.email || 'No email'}
-                    </div>
+                  <td className="py-3 px-4 text-sm text-gray-800">
+                    <div className="font-medium">{order.userId?.name || 'Unknown User'}</div>
+                    <div className="text-xs text-gray-500">{order.userId?.email || 'No email'}</div>
                   </td>
 
-                  <td className="py-3 px-4">
-                    <ul className="list-disc pl-4 mb-2">
+                  <td className="py-3 px-4 text-sm text-gray-800">
+                    <ul className="list-disc pl-5 space-y-1 mb-2">
                       {order.items.map((item) => (
                         <li key={item.productId?._id}>
                           {item.productId?.name || 'Unknown Product'} × {item.qty}
@@ -61,32 +63,29 @@ export default function VendorOrders() {
                       ))}
                     </ul>
 
-                    {/* Delivery Agent Info */}
                     {order.deliveryAgent ? (
-                      <div className="text-sm text-green-400">
+                      <div className="text-xs text-green-600">
                         Agent: {order.deliveryAgent.name} ({order.deliveryAgent.email})
                       </div>
                     ) : (
-                      <div className="text-sm text-yellow-400">Agent not assigned</div>
+                      <div className="text-xs text-yellow-600">Agent not assigned</div>
                     )}
 
-                    {/* Delivery Timeline */}
                     {order.deliveryTimeline?.length > 0 && (
-                      <ul className="mt-2 text-xs text-gray-300 space-y-1 pl-2 border-l border-red-500">
+                      <ul className="mt-2 text-xs text-gray-600 border-l-2 border-purple-400 pl-3 space-y-1">
                         {order.deliveryTimeline.map((status, i) => (
                           <li key={i}>
-                             {status.status} –{' '}
-                            {new Date(status.timestamp).toLocaleString()}
+                            {status.status} – {new Date(status.timestamp).toLocaleString()}
                           </li>
                         ))}
                       </ul>
                     )}
                   </td>
 
-                  <td className="py-3 px-4 text-right font-semibold text-green-400">
+                  <td className="py-3 px-4 text-right text-green-700 font-semibold text-sm">
                     ₹{order.total?.toFixed(2)}
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-300">
+                  <td className="py-3 px-4 text-xs text-gray-500">
                     {new Date(order.createdAt).toLocaleString()}
                   </td>
                 </tr>

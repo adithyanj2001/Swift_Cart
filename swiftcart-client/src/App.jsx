@@ -42,8 +42,8 @@ import CustomerOrders from './pages/customer/CustomerOrders';
 import CustomerLayout from './pages/customer/CustomerLayout';
 import PaymentSuccess from './pages/customer/PaymentSuccess';
 import CategoryPage from './pages/customer/CategoryPage';
-
 import PrivateRoute from './components/PrivateRoute';
+import ProductDetails from './pages/customer/ProductDetails';
 
 function App() {
   return (
@@ -73,6 +73,7 @@ function App() {
             <Route path="orders" element={<CustomerOrders />} />
             <Route path="payment-success" element={<PaymentSuccess />} />
             <Route path="/customer/category/:categoryName" element={<CategoryPage />} />
+            <Route path="/customer/product/:id" element={<ProductDetails />} />
           </Route>
 
           {/* Admin Routes */}

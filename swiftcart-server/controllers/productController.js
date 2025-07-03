@@ -3,7 +3,8 @@ const Product = require('../models/Product');
 // (vendor only)
 exports.createProduct = async (req, res) => {
   try {
-    const { name, price, stock, category, imageUrl } = req.body;
+    const { name, price, stock, category, description } = req.body;
+    const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : '';
 
     if (!name || !price || !stock || !category) {
       return res.status(400).json({ message: 'Missing required fields' });
@@ -15,6 +16,7 @@ exports.createProduct = async (req, res) => {
       price,
       stock,
       category,
+      description,
       imageUrl
     });
 
@@ -23,6 +25,7 @@ exports.createProduct = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 //products (public)
 exports.getAllProducts = async (req, res) => {

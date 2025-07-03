@@ -16,7 +16,7 @@ function CategoryPage() {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4 capitalize">{categoryName}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard

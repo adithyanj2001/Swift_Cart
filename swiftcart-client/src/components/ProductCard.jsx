@@ -39,7 +39,7 @@ function ProductCard({ product }) {
   return (
     <div
       className="bg-white rounded-lg shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer flex flex-col"
-      onClick={() => navigate(`/product/${product._id}`)}
+      onClick={() => navigate(`/customer/product/${product._id}`)}
       title={product.name}
     >
       {/* Image Container */}
@@ -60,7 +60,7 @@ function ProductCard({ product }) {
         <div className="mt-4 flex gap-3">
           <button
             onClick={handleAddToCart}
-            className="flex-1 bg-red-700 text-white py-2 rounded hover:bg-red-800 transition"
+            className="flex-1 bg-purple-900 text-white py-1.5 rounded hover:bg-purple-700 text-xs sm:text-sm"
           >
             Add to Cart
           </button>

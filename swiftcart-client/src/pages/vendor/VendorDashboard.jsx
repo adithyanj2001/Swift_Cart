@@ -12,16 +12,16 @@ export default function VendorDashboard() {
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? 'block w-full text-left px-4 py-2 bg-red-700 text-white rounded-md'
-      : 'block w-full text-left px-4 py-2 text-white hover:bg-red-700 rounded-md transition';
+      ? 'block w-full text-left px-4 py-2 bg-purple-700 text-white rounded-md'
+      : 'block w-full text-left px-4 py-2 text-white hover:bg-purple-700 rounded-md transition';
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-gradient-to-r from-black via-red-800 to-black text-white px-4 md:px-6 py-4 flex items-center justify-between shadow-lg">
+      {/* Navbar */} 
+      <nav className="sticky top-0 z-50 bg-gradient-to-r from-purple-950 via-fuchsia-500 to-purple-950 text-white px-4 md:px-6 py-4 flex items-center justify-between shadow-lg">
         {/*  Logo swift cart*/}
         <div className="text-2xl font-extrabold tracking-wide">
-          <NavLink to="/vendor/dashboard/homepage" className="hover:text-red-300">
+          <NavLink to="/vendor/dashboard/homepage" className="hover:text-purple-500">
             SwiftCart
           </NavLink>
         </div>
@@ -73,7 +73,7 @@ export default function VendorDashboard() {
           {/* Logout Button (Desktop) */}
           <button
             onClick={handleLogout}
-            className="hidden md:inline-block px-4 py-2 bg-red-600 hover:bg-red-700 rounded text-white font-semibold transition"
+            className="hidden md:inline-block px-4 py-2 bg-fuchsia-600 hover:bg-purple-700 rounded text-white font-semibold transition"
           >
             Logout
           </button>
