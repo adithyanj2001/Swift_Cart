@@ -266,44 +266,56 @@ exports.getVendorRevenueChart = async (req, res) => {
 exports.getVendorSalesSummary = async (req, res) => {
   try {
     const vendorId = req.user._id;
-    const categoryFilter = req.query.category;
+    const { category, month } = req.query;
 
-    const orders = await Order.find({ vendorId })
-      .populate({
-        path: 'items.productId',
-        select: 'name price category', // include category
-      });
+    // Build base query
+    const query = { vendorId };
+
+    // Month filter
+    if (month && month !== 'All') {
+      const monthIndex = new Date(`${month} 1, 2025`).getMonth(); // Convert month name to index
+      const startDate = new Date(new Date().getFullYear(), monthIndex, 1);
+      const endDate = new Date(new Date().getFullYear(), monthIndex + 1, 1);
+      query.createdAt = { $gte: startDate, $lt: endDate };
+    }
+
+    const orders = await Order.find(query).populate({
+      path: 'items.productId',
+      select: 'name price category',
+    });
 
     const summary = {};
 
-    orders.forEach((order) => {
-      order.items.forEach((item) => {
+    for (const order of orders) {
+      for (const item of order.items) {
         const product = item.productId;
-        if (!product) return;
+        if (!product) continue;
 
-        if (categoryFilter && product.category !== categoryFilter) return; 
+        if (category && category !== 'All' && product.category !== category) continue;
 
         const id = product._id.toString();
         if (!summary[id]) {
           summary[id] = {
             productId: id,
             productName: product.name,
-            unitsSold: 0,
             revenue: 0,
+            unitsSold: 0,
+            category: product.category,
           };
         }
 
         summary[id].unitsSold += item.qty;
         summary[id].revenue += item.qty * product.price;
-      });
-    });
+      }
+    }
 
     res.json(Object.values(summary));
   } catch (err) {
     console.error('Vendor sales summary error:', err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'Failed to fetch vendor sales summary' });
   }
 };
+
 
 // Vendor Dashboard Stats API
 exports.getVendorDashboardStats = async (req, res) => {

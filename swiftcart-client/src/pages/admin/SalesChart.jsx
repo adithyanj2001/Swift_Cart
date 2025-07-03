@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { toast } from 'react-toastify'; 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -68,7 +69,7 @@ const SalesChart = () => {
   const handleDownloadPDF = async () => {
     try {
       const original = reportRef.current;
-      if (!original) return alert('No content found');
+      if (!original) return  toast.error('No content found');
 
       const clone = original.cloneNode(true);
       clone.style.backgroundColor = '#ffffff';
@@ -102,7 +103,7 @@ const SalesChart = () => {
 
       document.body.removeChild(hiddenContainer);
     } catch (error) {
-      alert('PDF export failed.');
+      toast.error('PDF export failed.');
       console.error('PDF Error:', error);
     }
   };

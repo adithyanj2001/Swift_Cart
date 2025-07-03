@@ -18,6 +18,7 @@ import CustomerProductCard from '../../components/CustomerProductCard';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { toast } from 'react-toastify'; 
 
 function CustomerHome() {
   const [products, setProducts] = useState([]);
@@ -40,7 +41,7 @@ function CustomerHome() {
   useEffect(() => {
     API.get('/products')
       .then((res) => setProducts(res.data))
-      .catch(() => alert('Failed to load products'));
+      .catch(() => toast.error('Failed to load products'));
   }, []);
 
   const handleLogout = () => {

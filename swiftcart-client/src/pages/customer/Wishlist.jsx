@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../../services/api';
+import { toast } from 'react-toastify'; 
 
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
@@ -13,7 +14,7 @@ function Wishlist() {
   const fetchWishlist = () => {
     API.get('/wishlist')
       .then((res) => setWishlist(res.data))
-      .catch(() => alert('Failed to load wishlist'));
+      .catch(() => toast.error('Failed to load wishlist'));
   };
 
   const addToCart = async (productId, wishlistId) => {
@@ -21,9 +22,9 @@ function Wishlist() {
       await API.post('/cart', { productId, qty: 1 });
       await API.delete(`/wishlist/${wishlistId}`);
       setWishlist(prev => prev.filter(item => item._id !== wishlistId));
-      alert('Moved to cart!');
+      toast.success('Moved to cart!');
     } catch (err) {
-      alert(err.response?.data?.message || 'Error moving to cart');
+      toast.error(err.response?.data?.message || 'Error moving to cart');
     }
   };
 
@@ -32,7 +33,7 @@ function Wishlist() {
       await API.delete(`/wishlist/${wishlistId}`);
       setWishlist(prev => prev.filter(item => item._id !== wishlistId));
     } catch (err) {
-      alert('Failed to remove from wishlist');
+      toast.error('Failed to remove from wishlist');
     }
   };
 
@@ -65,7 +66,7 @@ function Wishlist() {
                 <div className="mt-3 flex gap-2">
                   <button
                     onClick={() => addToCart(product._id, item._id)}
-                    className="flex-1 bg-purple-900 text-white py-1.5 rounded hover:bg-purple-700 text-xs sm:text-sm"
+                    className="flex-1 bg-purple-800 text-white py-1.5 rounded hover:bg-purple-700 text-xs sm:text-sm"
                   >
                     Add to Cart
                   </button>

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify'; 
 
 function Checkout() {
   const navigate = useNavigate();
@@ -7,7 +8,7 @@ function Checkout() {
   const handlePayment = () => {
     //  payment success delay
     setTimeout(() => {
-      alert('Payment successful!');
+      toast.success('Payment successful!');
       navigate('/customer/orders');
     }, 2000);
   };

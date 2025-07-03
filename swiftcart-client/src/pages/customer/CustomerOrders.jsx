@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../services/api';
+import { toast } from 'react-toastify'; 
 
 const CustomerOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -16,7 +17,7 @@ const CustomerOrders = () => {
         setOrders(res.data);
         setFilteredOrders(res.data);
       })
-      .catch(() => alert('Failed to load orders'))
+      .catch(() => toast.error('Failed to load orders'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -70,7 +71,7 @@ const CustomerOrders = () => {
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      alert(error.message || 'Error downloading invoice');
+      toast.error(error.message || 'Error downloading invoice');
     }
   };
 

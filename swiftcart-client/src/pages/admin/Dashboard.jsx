@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import API from '../../services/api';
 import { FaUsers, FaStore, FaUserTie } from 'react-icons/fa';
+import { toast } from 'react-toastify'; 
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -10,15 +11,15 @@ function AdminDashboard() {
   useEffect(() => {
     API.get('/admin/users')
       .then((res) => setUsers(res.data))
-      .catch(() => alert('Failed to fetch users'));
+      .catch(() => toast.error('Failed to fetch users'));
 
     API.get('/admin/vendors')
       .then((res) => setVendors(res.data))
-      .catch(() => alert('Failed to fetch vendors'));
+      .catch(() => toast.error('Failed to fetch vendors'));
 
     API.get('/admin/agents')
       .then((res) => setAgents(res.data))
-      .catch(() => alert('Failed to fetch agents'));
+      .catch(() => toast.error('Failed to fetch agents'));
   }, []);
 
   return (

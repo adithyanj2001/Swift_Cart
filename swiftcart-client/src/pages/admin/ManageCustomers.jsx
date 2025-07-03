@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../services/api';
+import { toast } from 'react-toastify';
 
 const ManageCustomers = () => {
   const [customers, setCustomers] = useState([]);
@@ -14,7 +15,7 @@ const ManageCustomers = () => {
       setCustomers(res.data);
     } catch (err) {
       console.error(err);
-      alert('Failed to load customers');
+      toast.error('Failed to load customers');
     }
   };
 
@@ -23,10 +24,10 @@ const ManageCustomers = () => {
       try {
         await API.delete(`/admin/customers/${id}`);
         setCustomers(customers.filter((c) => c._id !== id));
-        alert('Customer removed successfully');
+        toast.success('Customer removed successfully');
       } catch (err) {
         console.error(err);
-        alert('Error removing customer');
+        toast.error('Error removing customer');
       }
     }
   };

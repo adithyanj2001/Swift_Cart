@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import API from '../../services/api';
 import ProductCard from '../../components/ProductCard';
+import { toast } from 'react-toastify'; 
 
 function CategoryPage() {
   const { categoryName } = useParams(); 
@@ -10,7 +11,7 @@ function CategoryPage() {
   useEffect(() => {
     API.get(`/products?category=${categoryName}`)
       .then((res) => setProducts(res.data))
-      .catch(() => alert('Failed to load category products'));
+      .catch(() =>  toast.error('Failed to load category products'));
   }, [categoryName]);
 
   return (

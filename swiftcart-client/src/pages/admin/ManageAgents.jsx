@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../services/api';
+import { toast } from 'react-toastify'; 
 
 const ManageAgents = () => {
   const [agent, setAgent] = useState({
@@ -23,7 +24,7 @@ const ManageAgents = () => {
       const res = await API.get('/admin/agents');
       setAgents(res.data);
     } catch {
-      alert('Failed to fetch agents');
+      toast.error('Failed to fetch agents');
     }
   };
 
@@ -31,11 +32,11 @@ const ManageAgents = () => {
     e.preventDefault();
     try {
       await API.post('/admin/agents', agent);
-      alert('✅ Agent added successfully!');
+      toast.success(' Agent added successfully!');
       setAgent({ name: '', email: '', phone: '', region: '', password: '' });
       if (showAgents) fetchAgents();
     } catch {
-      alert('Error adding agent');
+      toast.error('Error adding agent');
     }
   };
 
@@ -51,11 +52,11 @@ const ManageAgents = () => {
   const handleEditSubmit = async (id) => {
     try {
       await API.put(`/admin/agents/${id}`, editData);
-      alert('Agent updated!');
+      toast.success('Agent updated!');
       setEditId(null);
       fetchAgents();
     } catch {
-      alert('Error updating agent');
+      toast.error('Error updating agent');
     }
   };
 
@@ -63,10 +64,10 @@ const ManageAgents = () => {
     if (!window.confirm('Are you sure you want to delete this agent?')) return;
     try {
       await API.delete(`/admin/agents/${id}`);
-      alert('Agent deleted!');
+      toast.success('Agent deleted!');
       fetchAgents();
     } catch {
-      alert('Failed to delete agent');
+      toast.error('Failed to delete agent');
     }
   };
 

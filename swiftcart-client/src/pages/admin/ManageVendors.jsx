@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../services/api';
+import { toast } from 'react-toastify'; 
 
 const ManageVendors = () => {
   const [vendor, setVendor] = useState({
@@ -23,7 +24,7 @@ const ManageVendors = () => {
       const res = await API.get('/admin/vendors');
       setVendors(res.data);
     } catch (err) {
-      alert('Failed to fetch vendors');
+      toast.error('Failed to fetch vendors');
     }
   };
 
@@ -31,11 +32,11 @@ const ManageVendors = () => {
     e.preventDefault();
     try {
       await API.post('/admin/vendors', vendor);
-      alert('Vendor added successfully!');
+      toast.success('Vendor added successfully!');
       setVendor({ name: '', email: '', phone: '', address: '', place: '' });
       if (showVendors) fetchVendors();
     } catch (err) {
-      alert(err.response?.data?.message || 'Error adding vendor');
+      toast.error(err.response?.data?.message || 'Error adding vendor');
     }
   };
 
@@ -51,11 +52,11 @@ const ManageVendors = () => {
   const handleEditSubmit = async (id) => {
     try {
       await API.put(`/admin/vendors/${id}`, editData);
-      alert('Vendor updated successfully!');
+      toast.success('Vendor updated successfully!');
       setEditId(null);
       fetchVendors();
     } catch {
-      alert('Error updating vendor');
+      toast.error('Error updating vendor');
     }
   };
 
@@ -63,10 +64,10 @@ const ManageVendors = () => {
     if (!window.confirm('Are you sure you want to delete this vendor?')) return;
     try {
       await API.delete(`/admin/vendors/${id}`);
-      alert('Vendor deleted!');
+      toast.success('Vendor deleted!');
       fetchVendors();
     } catch {
-      alert('Failed to delete vendor');
+      toast.error('Failed to delete vendor');
     }
   };
 

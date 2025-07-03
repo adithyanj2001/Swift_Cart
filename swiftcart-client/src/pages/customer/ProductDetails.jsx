@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import API from '../../services/api';
 import { FaHeart } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify'; 
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -34,16 +35,16 @@ export default function ProductDetails() {
       navigate('/customer/wishlist'); // Redirect after adding
     } catch (err) {
       const msg = err.response?.data?.message;
-      alert(msg || 'Failed to add to wishlist');
+      toast.error(msg || 'Failed to add to wishlist');
     }
   };
 
   const handleAddToCart = async () => {
     try {
       await API.post('/cart', { productId: product._id, qty: 1 });
-      alert('Added to cart!');
+      toast.success('Added to cart!');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to add to cart');
+      toast.error(err.response?.data?.message || 'Failed to add to cart');
     }
   };
 
@@ -52,7 +53,7 @@ export default function ProductDetails() {
       await API.post('/cart', { productId: product._id, qty: 1 });
       navigate('/customer/cart');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to add to cart');
+     toast.error(err.response?.data?.message || 'Failed to add to cart');
     }
   };
 
