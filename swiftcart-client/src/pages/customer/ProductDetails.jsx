@@ -106,13 +106,13 @@ export default function ProductDetails() {
           <div className="mt-6 flex gap-4">
             <button
               onClick={handleAddToCart}
-              className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700"
+              className="bg-purple-600 text-white px-5 py-2 rounded hover:bg-green-700"
             >
               Add to Cart
             </button>
             <button
               onClick={handleBuyNow}
-              className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+              className="bg-yellow-600 text-white px-5 py-2 rounded hover:bg-blue-700"
             >
               Buy Now
             </button>

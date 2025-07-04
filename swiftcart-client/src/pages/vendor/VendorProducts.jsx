@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import API from '../../services/api';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -11,6 +11,7 @@ function Products() {
     stock: '',
     category: '',
     imageUrl: '',
+    description: '', // ✅ Added
   });
 
   const fetchProducts = () => {
@@ -24,7 +25,14 @@ function Products() {
   }, []);
 
   const handleEdit = (product) => {
-    setForm(product);
+    setForm({
+      name: product.name,
+      price: product.price,
+      stock: product.stock,
+      category: product.category,
+      imageUrl: product.imageUrl,
+      description: product.description || '', // ✅ Added
+    });
     setEditId(product._id);
   };
 
@@ -37,7 +45,14 @@ function Products() {
     try {
       await API.put(`/products/${editId}`, form);
       toast.success('Product updated');
-      setForm({ name: '', price: '', stock: '', category: '', imageUrl: '' });
+      setForm({
+        name: '',
+        price: '',
+        stock: '',
+        category: '',
+        imageUrl: '',
+        description: '', // ✅ Reset
+      });
       setEditId(null);
       fetchProducts();
     } catch (err) {
@@ -62,7 +77,7 @@ function Products() {
         Your Products
       </h1>
 
-      {/* Blur background when modal is open */}
+      {/* Blur background when editing */}
       <div className={editId ? 'filter blur-sm pointer-events-none select-none' : ''}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {products.map((product) => (
@@ -82,6 +97,9 @@ function Products() {
                 <p className="text-sm text-purple-700">Category: {product.category}</p>
                 <p className="text-md font-semibold text-purple-800">₹{product.price}</p>
                 <p className="text-sm text-purple-600">Stock: {product.stock}</p>
+                {product.description && (
+                  <p className="text-sm text-purple-500 line-clamp-2">{product.description}</p>
+                )}
 
                 <div className="flex justify-between pt-3 mt-auto">
                   <button
@@ -151,12 +169,26 @@ function Products() {
                 value={form.imageUrl}
                 onChange={handleChange}
               />
+              <textarea
+                name="description"
+                placeholder="Product Description"
+                className="w-full p-2 border border-purple-300 rounded resize-none"
+                value={form.description}
+                onChange={handleChange}
+              />
               <div className="flex justify-end gap-2 pt-3">
                 <button
                   type="button"
                   onClick={() => {
                     setEditId(null);
-                    setForm({ name: '', price: '', stock: '', category: '', imageUrl: '' });
+                    setForm({
+                      name: '',
+                      price: '',
+                      stock: '',
+                      category: '',
+                      imageUrl: '',
+                      description: '',
+                    });
                   }}
                   className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
                 >

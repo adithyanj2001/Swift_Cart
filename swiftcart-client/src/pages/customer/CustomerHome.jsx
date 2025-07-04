@@ -1,4 +1,3 @@
-// ... (all imports stay the same)
 import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -14,6 +13,7 @@ import {
 } from 'react-icons/fa';
 import API from '../../services/api';
 import CustomerProductCard from '../../components/CustomerProductCard';
+import CustomerFooter from '../../pages/customer/CustomerFooter';
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
@@ -88,7 +88,7 @@ function CustomerHome() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-white to-gray-500 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-l from-white to-fuchsia-50 flex flex-col">
       {/* Top Nav */}
       <div className={`fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
         <nav className="bg-gradient-to-l from-purple-950 via-fuchsia-500 to-purple-950 shadow px-4 py-6 flex items-center justify-between relative">
@@ -244,14 +244,14 @@ function CustomerHome() {
           <Slider {...bannerSettings} className="rounded-lg shadow-lg">
             <div>
               <img
-                src="https://i.ytimg.com/vi/N6cFknYffdI/maxresdefault.jpg"
+                src="https://rog.realcomputer.in/images/fwebp%20(2).webp"
                 alt="Banner"
                 className="w-full h-64 md:h-96 xl:h-[30rem] 2xl:h-[36rem] object-cover rounded-lg"
               />
             </div>
             <div>
               <img
-                src="https://i3.ytimg.com/vi/1aqI7EnfbVM/maxresdefault.jpg"
+                src="https://www.apple.com/newsroom/images/2024/09/introducing-apple-watch-series-10/article/Apple-Watch-Series-10-lineup-240909_big.jpg.large.jpg"
                 alt="Banner"
                 className="w-full h-64 md:h-96 xl:h-[30rem] 2xl:h-[36rem] object-cover rounded-lg"
               />
@@ -308,6 +308,9 @@ function CustomerHome() {
           100% { background-position: 200% center; }
         }
       `}</style>
+      <div>
+        <CustomerFooter />
+      </div>
     </div>
   );
 }

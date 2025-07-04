@@ -10,6 +10,7 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
+import CustomerFooter from '../../pages/customer/CustomerFooter';
 
 function CustomerLayout() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function CustomerLayout() {
   }, [menuOpen]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-white to-gray-500 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-l from-white to-fuchsia-30 flex flex-col">
       {/* Sticky Navbar */}
       <div
         className={`fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${
@@ -124,6 +125,9 @@ function CustomerLayout() {
       <main className="flex-grow p-4 sm:p-6 mt-28">
         <Outlet />
       </main>
+      <div>
+        <CustomerFooter />
+      </div>
     </div>
   );
 }

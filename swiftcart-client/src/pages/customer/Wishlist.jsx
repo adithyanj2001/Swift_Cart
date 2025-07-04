@@ -38,7 +38,7 @@ function Wishlist() {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gradient-to-l from-white to-gray-500">
+    <div className="p-6 min-h-screen bg-gradient-to-l from-white to-fuchsia-50">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800 text-center">My Wishlist</h1>
 
       {wishlist.length === 0 ? (

@@ -66,7 +66,7 @@ function ProductCard({ product }) {
           </button>
           <button
             onClick={handleAddToWishlist}
-            className="flex-1 bg-gray-700 text-white py-2 rounded hover:bg-gray-800 transition"
+            className="flex-1 bg-green-600 text-white py-2 rounded hover:bg-gray-800 transition"
           >
             Wishlist
           </button>
